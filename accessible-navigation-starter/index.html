@@ -19,6 +19,8 @@
 
 <body>
 
+  <!-- SKIP LINK: first focusable element. Hidden until focused (see author.css), then jumps
+       past the repeated navigation to <main id="main-content"> (WCAG 2.4.1). -->
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <header>
@@ -39,12 +41,21 @@
 
       <!-- Main navigation starts here -->
 
+      <!-- LANDMARK: <nav> with aria-label="Main" (read as "Main navigation"). The footer has a
+           second <nav>, so each one needs a distinct label.
+           PATTERN: disclosure navigation. Plain <ul>/<li>/<a> plus <button aria-expanded>
+           for each sub-list. No role="menu": that is for app menus and would hide the
+           links' normal semantics. role="list" keeps list semantics in Safari/VoiceOver,
+           which drops them when list-style is none. -->
       <nav id="main-nav" class="main-nav" aria-label="Main">
         <ul class="main-menu" role="list">
 
           <!-- Paints -->
           <li class="nav-paints has-sub">
 
+            <!-- Sub-menu trigger is a <button> (it does not navigate). aria-expanded announces
+                 open/closed (toggled in nav.js); aria-controls points to the list it reveals.
+                 The chevron SVG is decorative: aria-hidden, focusable="false". -->
             <button class="top-link sub-trigger" type="button" aria-expanded="false" aria-controls="menu-paints">
               Paints
 
@@ -56,6 +67,7 @@
             </button>
             <ul class="sub-menu" role="list" id="menu-paints">
               <li><a class="sub-link" href="#">Oil Paints</a></li>
+              <!-- Third level uses the same pattern: nested <ul> toggled by its own button -->
               <li class="has-sub">
                 <button class="sub-link sub-trigger" type="button" aria-expanded="false"
                   aria-controls="menu-acrylic">
@@ -175,6 +187,8 @@
       <!-- Nav actions: cart, search, hamburger -->
       <div class="nav-actions">
 
+        <!-- Icon-only buttons: the name comes from aria-label; the SVG is aria-hidden. The cart
+             count is in the label, so the visual badge is hidden to avoid double reading. -->
         <button class="icon-btn" type="button" aria-label="Shopping bag, 3 items">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -196,6 +210,9 @@
         </button>
 
         <!-- Hamburger: mobile only -->
+        <!-- A real <button> (focusable, Enter/Space for free). aria-expanded reports open/closed;
+             aria-controls points to the <nav>. The label stays "Main menu" because state is
+             carried by aria-expanded. The three bars are decorative (aria-hidden). -->
         <button class="nav-toggle" type="button" aria-label="Main menu" aria-expanded="false"
           aria-controls="main-nav">
           <span class="bar" aria-hidden="true"></span>
@@ -209,6 +226,7 @@
   </header>
 
   <!-- Main content -->
+  <!-- tabindex="-1" lets the skip link move focus here in every browser -->
   <main id="main-content" tabindex="-1">
 
     <section class="hero">
@@ -242,6 +260,7 @@
     <div class="inner-container">
       <p class="footer-logo">Pigment<span>&amp;</span>Co</p>
 
+      <!-- Second <nav> landmark, so it gets its own accessible name -->
       <nav aria-label="Footer">
         <ul class="footer-links" role="list">
           <li><a href="#">About</a></li>
