@@ -19,8 +19,8 @@
 
 <body>
 
-  <!-- SKIP LINK: first focusable element. Hidden until focused (see author.css), then jumps
-       past the repeated navigation to <main id="main-content"> (WCAG 2.4.1). -->
+  <!-- Skip link: the first thing you can tab to. It's hidden until it gets focus, then it jumps
+       straight to <main> so keyboard users don't have to tab through the whole nav every time. -->
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <header>
@@ -41,21 +41,20 @@
 
       <!-- Main navigation starts here -->
 
-      <!-- LANDMARK: <nav> with aria-label="Main" (read as "Main navigation"). The footer has a
-           second <nav>, so each one needs a distinct label.
-           PATTERN: disclosure navigation. Plain <ul>/<li>/<a> plus <button aria-expanded>
-           for each sub-list. No role="menu": that is for app menus and would hide the
-           links' normal semantics. role="list" keeps list semantics in Safari/VoiceOver,
-           which drops them when list-style is none. -->
+      <!-- <nav> landmark. I gave it aria-label="Main" because the footer has a <nav> too and screen
+           reader users need to tell them apart.
+           I went with a disclosure pattern (lists + links + buttons with aria-expanded) instead of
+           role="menu", because role="menu" is meant for app menus and changes how links get read.
+           role="list" is there because list-style: none makes Safari/VoiceOver stop treating it as a list. -->
       <nav id="main-nav" class="main-nav" aria-label="Main">
         <ul class="main-menu" role="list">
 
           <!-- Paints -->
           <li class="nav-paints has-sub">
 
-            <!-- Sub-menu trigger is a <button> (it does not navigate). aria-expanded announces
-                 open/closed (toggled in nav.js); aria-controls points to the list it reveals.
-                 The chevron SVG is decorative: aria-hidden, focusable="false". -->
+            <!-- These are <button>s, not links, because they open a sub-menu instead of going to a page.
+                 aria-expanded tells screen readers if it's open or closed (nav.js flips it) and aria-controls
+                 points to the list it opens. The chevron is just decoration so it's aria-hidden. -->
             <button class="top-link sub-trigger" type="button" aria-expanded="false" aria-controls="menu-paints">
               Paints
 
@@ -67,7 +66,7 @@
             </button>
             <ul class="sub-menu" role="list" id="menu-paints">
               <li><a class="sub-link" href="#">Oil Paints</a></li>
-              <!-- Third level uses the same pattern: nested <ul> toggled by its own button -->
+              <!-- Third level works the same way: a nested list with its own button -->
               <li class="has-sub">
                 <button class="sub-link sub-trigger" type="button" aria-expanded="false"
                   aria-controls="menu-acrylic">
@@ -187,8 +186,8 @@
       <!-- Nav actions: cart, search, hamburger -->
       <div class="nav-actions">
 
-        <!-- Icon-only buttons: the name comes from aria-label; the SVG is aria-hidden. The cart
-             count is in the label, so the visual badge is hidden to avoid double reading. -->
+        <!-- Icon-only buttons get their name from aria-label and the SVGs are aria-hidden. The item count
+             is already in the label, so I hid the little badge so it doesn't get read twice. -->
         <button class="icon-btn" type="button" aria-label="Shopping bag, 3 items">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -210,9 +209,9 @@
         </button>
 
         <!-- Hamburger: mobile only -->
-        <!-- A real <button> (focusable, Enter/Space for free). aria-expanded reports open/closed;
-             aria-controls points to the <nav>. The label stays "Main menu" because state is
-             carried by aria-expanded. The three bars are decorative (aria-hidden). -->
+        <!-- Real <button> so it's focusable and works with Enter/Space for free. aria-expanded says if the
+             menu is open and aria-controls points to the nav. The label stays "Main menu" and only the
+             state changes, so it isn't announced twice. The bars are decoration (aria-hidden). -->
         <button class="nav-toggle" type="button" aria-label="Main menu" aria-expanded="false"
           aria-controls="main-nav">
           <span class="bar" aria-hidden="true"></span>
@@ -226,7 +225,7 @@
   </header>
 
   <!-- Main content -->
-  <!-- tabindex="-1" lets the skip link move focus here in every browser -->
+  <!-- tabindex="-1" so the skip link can actually move focus here in every browser -->
   <main id="main-content" tabindex="-1">
 
     <section class="hero">
@@ -260,7 +259,7 @@
     <div class="inner-container">
       <p class="footer-logo">Pigment<span>&amp;</span>Co</p>
 
-      <!-- Second <nav> landmark, so it gets its own accessible name -->
+      <!-- Second <nav>, so it needs its own label -->
       <nav aria-label="Footer">
         <ul class="footer-links" role="list">
           <li><a href="#">About</a></li>
